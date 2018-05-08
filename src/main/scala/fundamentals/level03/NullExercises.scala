@@ -31,10 +31,10 @@ object NullExercises {
     **/
   def mkTrafficLightOrNull(str: String): TrafficLight =
     str match {
-      case "red" => ???
-      case "yellow" => ???
-      case "green" => ???
-      case _ => ???
+      case "red" => Red
+      case "yellow" => Yellow
+      case "green" => Green
+      case _ => null
     }
 
   /**
@@ -54,7 +54,13 @@ object NullExercises {
     *
     * Hint: Use `mkTrafficLightOrNull` and pattern matching
     */
-  def mkTrafficLightOrNullThenShow(str: String): String = ???
+  def mkTrafficLightOrNullThenShow(str: String): String =
+    s"Traffic light is ${mkTrafficLightOrNull(str) match {
+      case Red => "red"
+      case Yellow => "yellow"
+      case Green => "green"
+      case _ => "invalid"
+    } }"
 
   /**
     * Write a function that converts values from the real world into a `Person`.
@@ -73,7 +79,12 @@ object NullExercises {
     * scala> mkPersonOrNull("Bob", -1)
     * = null
     **/
-  def mkPersonOrNull(name: String, age: Int): Person = ???
+  def mkPersonOrNull(name: String, age: Int): Person =
+    (name, age) match {
+      case ("", _) => null
+      case (_, a) if a < 0 => null
+      case _ => Person(name, age)
+    }
 
   /**
     * scala> mkPersonOrNullThenChangeName("Bob", 20, "John")
@@ -87,7 +98,11 @@ object NullExercises {
     *
     * Hint: Use `mkPersonOrNull` and `changeName` (already implemented below)
     **/
-  def mkPersonOrNullThenChangeName(oldName: String, age: Int, newName: String): Person = ???
+  def mkPersonOrNullThenChangeName(oldName: String, age: Int, newName: String): Person =
+    mkPersonOrNull(oldName, age) match {
+      case null => null
+      case p => mkPersonOrNull(newName, age)
+    }
 
   def changeName(newName: String, person: Person): Person = person.copy(name = newName)
 
