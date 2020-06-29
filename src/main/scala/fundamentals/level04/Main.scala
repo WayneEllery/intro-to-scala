@@ -21,8 +21,7 @@ object Main {
         // Read from file
         val fileContent: String = Source.fromFile(filepath).getLines().mkString("\n")
 
-        // Implement `printErrorsOverSeverity` and then call it from here
-        ???
+        printErrorsOverSeverity(fileContent, 0)
 
       case _ => println("""sbt "runMain fundamentals.level04.Main src/main/resources/logfile.csv"""")
     }
@@ -38,6 +37,7 @@ object Main {
     *
     * Hint: Use println to write to stdout
     */
-  private def printErrorsOverSeverity(logFile: String, severity: Int): Unit = ???
+  private def printErrorsOverSeverity(logFile: String, severity: Int): Unit =
+    LogParser.showErrorsOverSeverity(logFile, severity)
 
 }

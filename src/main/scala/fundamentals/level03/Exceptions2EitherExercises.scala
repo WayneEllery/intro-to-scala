@@ -121,12 +121,14 @@ object Exceptions2EitherExercises {
     * Hint: Use `createPerson` then use `map` and `copy`.
     *
     */
-  def makeNameUpperCase(name: String, age: String): Either[AppError, Person] = ???
+  def makeNameUpperCase(name: String, age: String): Either[AppError, Person] =
+    createPerson(name, age).map(p => p.copy(p.name.toUpperCase))
 
   /**
     * Reimplement createPerson using only `flatMap` and `map`
     */
- def createPerson2(name: String, age: String): Either[AppError, Person] = ???
+ def createPerson2(name: String, age: String): Either[AppError, Person] =
+   getName(name).flatMap(name => getAge(age).map(age => Person(name, age)))
 
 
   /**
@@ -153,7 +155,13 @@ object Exceptions2EitherExercises {
     * }
     * ```
     */
-  def createPersonAndShow(name: String, age: String): String = ???
+  def createPersonAndShow(name: String, age: String): String =
+    createPerson2(name, age) match {
+      case Left(EmptyName(_)) => "Empty name supplied"
+      case Left(InvalidAgeValue(_)) => "Invalid age value supplied"
+      case Left(InvalidAgeRange(_)) => "Invalid age range supplied"
+      case Right(person) => s"${person.name} is ${person.age}"
+    }
 
   /**
     * Implement the function createValidPeople that uses the personStringPairs List
@@ -165,7 +173,7 @@ object Exceptions2EitherExercises {
     * Hint: Use `map` and `collect`
     *
     */
-  def createValidPeople: List[Person] = ???
+  def createValidPeople: List[Person] = personStringPairs.map(p => createPerson2(p._1, p._2)).collect { case Right(p) => p }
 
   /**
     * Implement the function collectErrors that collects all the errors
@@ -179,5 +187,5 @@ object Exceptions2EitherExercises {
     *
     * Hint: Use `map` and `collect`
     */
-  def collectErrors: List[AppError] = ???
+  def collectErrors: List[AppError] = personStringPairs.map(p => createPerson2(p._1, p._2)).collect { case Left(e) => e }
 }
